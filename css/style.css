@@ -64,3 +64,8 @@ body{
 .active{
     display: inline-block;
 }
+
+/* Nascondere slide */
+.hidden{
+    display: none;
+}
