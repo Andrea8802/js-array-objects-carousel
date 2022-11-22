@@ -67,11 +67,6 @@ body{
     display: inline-block;
 }
 
-/* Nascondere slide */
-.hidden{
-    display: none;
-}
-
 #card{
     position: relative;
     color: white;
