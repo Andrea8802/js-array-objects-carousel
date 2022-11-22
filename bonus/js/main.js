@@ -10,13 +10,12 @@ images.forEach(element =>{
 });
 
 // Stampiamo il testo
-const title = document.getElementById("title").innerHTML = images[0].title;
-document.getElementById("text").innerHTML = images[0].text;
+title.innerHTML = images[0].title;
+text.innerHTML = images[0].text;
 
 // Aggiunta classe per rendere visibile la prima slide
 const classImg = document.getElementsByClassName("img-carousel");
 classImg[0].classList.add("active");
-
 
 // Numero Slide
 let nSlide = 0;
@@ -52,8 +51,35 @@ document.querySelector(".circle.up").addEventListener("click",
             classImg[(nSlide + 1)].classList.remove("active")
         }
 
+        // 
         title.innerHTML = images[nSlide].title;
         text.innerHTML = images[nSlide].text;
         classImg[nSlide].classList.add("active")
     }
 )
+
+// Inseriamo le immagini nella preview
+images.forEach(element => document.getElementById("preview").innerHTML += `<div class="container-img"> <img class="img-preview" src="${element.image}"> </div>`);
+
+// Selezioniamo tutti i container delle immagini e aggiungiamo la selezione sul primo
+const containerImg = document.getElementsByClassName("container-img");
+containerImg[0].classList.add("block-active")
+
+// Ciclo fro per cambiare immagine durante il click
+for (let i = 0; i < images.length; i++){
+    containerImg[i].addEventListener("click", onClickImg);
+
+    function onClickImg(){
+        // Gestione focus su immagini
+        document.getElementsByClassName("active")[0].classList.remove("active");
+        classImg[i].classList.add("active");
+        document.getElementsByClassName("block-active")[0].classList.remove("block-active")
+        containerImg[i].classList.add("block-active")
+
+        // Testo slide
+        title.innerHTML = images[i].title;
+        text.innerHTML = images[i].text;
+    }
+    
+};
+

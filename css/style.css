@@ -70,6 +70,7 @@ body{
 #card{
     position: relative;
     color: white;
+    background-color: blue;
 }
 
 .text-img{
@@ -86,4 +87,9 @@ body{
 
 #text{
     margin-top: 10px;
+}
+
+#preview{
+    position: relative;
+    background-color: red;
 }
