@@ -24,7 +24,7 @@ let nSlide = 0;
 // Freccia giù
 document.querySelector(".circle.down").addEventListener("click",
     function(){
-        if (nSlide === 4){
+        if (nSlide === images.length){
             classImg[nSlide].classList.remove("active")
             nSlide = 0;
         } else {
@@ -46,7 +46,7 @@ document.querySelector(".circle.up").addEventListener("click",
 
         if (nSlide === 0){
             classImg[nSlide].classList.remove("active")
-            nSlide = 4;
+            nSlide = images.length;
         } else {
             nSlide--;
             classImg[(nSlide + 1)].classList.remove("active")
