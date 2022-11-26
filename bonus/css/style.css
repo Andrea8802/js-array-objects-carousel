@@ -73,6 +73,10 @@ body{
     width: 70%;
 }
 
+    #card:hover .button-card{
+        display: inline-block;
+    }
+
 #card img {
     object-fit: cover;
 }
@@ -122,6 +126,7 @@ body{
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    display: none;
 }
 
 #start, #stop{

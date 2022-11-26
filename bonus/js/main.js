@@ -60,7 +60,7 @@ buttonUp.addEventListener("click",
     function(){
 
         // Stop switch automatico
-        clearTimeout(time);
+        clearInterval(time);
         
         if (nSlide === 0){
             classImg[nSlide].classList.remove("active")
@@ -84,16 +84,14 @@ const containerImg = document.getElementsByClassName("container-img");
 // Switch Automatico
 const time = setInterval(switchTime, 3000);
 
+
 // Ciclo for per cambiare immagine durante il click
 for (let i = 0; i < images.length; i++){
     containerImg[i].addEventListener("click", onClickImg);
     function onClickImg(){
 
-       
-
-
         // Stop switch automatico
-        clearTimeout(time);
+        clearInterval(time);
         
         // Rimozione tasti
         buttonDown.style.display = "none";
@@ -142,3 +140,31 @@ function switchTime(){
 document.getElementById("start").addEventListener("click", () => setInterval(switchTime, 3000));
 
 document.getElementById("stop").addEventListener("click", () => clearTimeout(time));
+document.getElementById("reverse").addEventListener("click",
+    function(){
+        clearTimeout(time)
+        nSlide = images.length - 1;
+        const timeReverse = setInterval(switchTimeReverse, 3000);
+
+    }
+)
+
+function switchTimeReverse(){
+    if (nSlide < images.length - 1){
+        document.querySelector(".active").classList.remove("active");
+        classImg[nSlide].classList.add("active");
+        nSlide--
+    } else if (nSlide === images.length - 1){
+        document.querySelector(".active").classList.remove("active");
+        classImg[nSlide].classList.add("active");
+        nSlide--
+    } 
+    
+    if (nSlide === 0){
+        document.querySelector(".active").classList.remove("active");
+        classImg[nSlide].classList.add("active");
+        nSlide = images.length - 1;
+    }
+    
+
+}
