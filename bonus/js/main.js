@@ -1,110 +1,100 @@
-// Creare un carousel infinito con una serie di immagini generate da js attraverso un array object
+// Creare un carousel infinito con una serie di immagini generate da js attraverso un array object e altre features
 
 // Array di oggetti 
 const images = [ 
     {
         image: 'img/01.webp', 
         title: 'Marvel\'s Spiderman Miles Morale', 
-        text: 'Experience the rise of Miles Morales as the new hero masters incredible, explosive new powers to become his own Spider-Man.', },
-         { image: 'img/02.webp', title: 'Ratchet & Clank: Rift Apart', text: 'Go dimension-hopping with Ratchet and Clank as they take on an evil emperor from another reality.', }, { image: 'img/03.webp', title: 'Fortnite', text: "Grab all of your friends and drop into Epic Games Fortnite, a massive 100 - player face - off that combines looting, crafting, shootouts and chaos.", }, { image: 'img/04.webp', title: 'Stray', text: 'Lost, injured and alone, a stray cat must untangle an ancient mystery to escape a long-forgotten city', }, { image: 'img/05.webp', title: "Marvel's Avengers", text: 'Marvel\'s Avengers is an epic, third-person, action-adventure game that combines an original, cinematic story with single-player and co-operative gameplay.', } ];
+        text: 'Experience the rise of Miles Morales as the new hero masters incredible, explosive new powers to become his own Spider-Man.', 
+    },
+
+    { 
+        image: 'img/02.webp', 
+        title: 'Ratchet & Clank: Rift Apart', 
+        text: 'Go dimension-hopping with Ratchet and Clank as they take on an evil emperor from another reality.', 
+    },
+
+    {   
+        image: 'img/03.webp', 
+        title: 'Fortnite', 
+        text: "Grab all of your friends and drop into Epic Games Fortnite, a massive 100 - player face - off that combines looting, crafting, shootouts and chaos.", 
+    },
+
+    { 
+        image: 'img/04.webp', 
+        title: 'Stray', 
+        text: 'Lost, injured and alone, a stray cat must untangle an ancient mystery to escape a long-forgotten city', 
+    }, 
+
+    { 
+        image: 'img/05.webp', 
+        title: "Marvel's Avengers", 
+        text: 'Marvel\'s Avengers is an epic, third-person, action-adventure game that combines an original, cinematic story with single-player and co-operative gameplay.', 
+    } 
+];
 
 
-// Stampare immagini con ciclo for each
+
+// Stampare immagini le immagini nella card
 images.forEach(element =>{
     document.getElementById("card").innerHTML += `<img src="${element.image}" class="img-carousel">`
 });
 
+// Stampare le immagini nella preview
+images.forEach(element => document.getElementById("preview").innerHTML += `<div class="container-img"> <img class="img-preview" src="${element.image}"> </div>`);
+
+
+
 // Stampiamo il testo
-const title = document.getElementById("title").innerHTML = images[0].title;
-const text = document.getElementById("text").innerHTML = images[0].text;
+const title = document.getElementById("title");
+const text = document.getElementById("text");
+title.innerHTML = images[0].title;
+text.innerHTML = images[0].text;
 
 // Aggiunta classe per rendere visibile la prima slide
 const classImg = document.getElementsByClassName("img-carousel");
 classImg[0].classList.add("active");
 
-
-
 // Numero Slide
 let nSlide = 0;
 
-// Inseriamo le immagini nella preview
-images.forEach(element => document.getElementById("preview").innerHTML += `<div class="container-img"> <img class="img-preview" src="${element.image}"> </div>`);
+// Aggiungere contorno stato attivo preview
+const containerImg = document.getElementsByClassName("container-img");
+containerImg[nSlide].classList.add("block-active");
 
 
-// Freccia giù
+
+// Pulsante freccia giù
 const buttonDown = document.querySelector(".circle.down");
 buttonDown.addEventListener("click",
     function(){
-
-        // Stop switch automatico
-        clearTimeout(time);
-        clearInterval(timeReverse);
-
-        if (nSlide === images.length){
-            classImg[nSlide].classList.remove("active")
-            nSlide = 0;
-        } else {
-            nSlide++;
-            classImg[(nSlide - 1)].classList.remove("active")
-        }
-
-        // Inserimento testo
-        title.innerHTML = images[nSlide].title;
-        text.innerHTML = images[nSlide].text;
-        classImg[nSlide].classList.add("active")  
+        stopSlide();
+        switchAvanti();   
     }
 )
 
-
-// Freccia su
+// Pulsante freccia su
 const buttonUp = document.querySelector(".circle.up");
 buttonUp.addEventListener("click",
     function(){
-
-        // Stop switch automatico
-        clearInterval(time);
-        clearInterval(timeReverse);
-        
-        if (nSlide === 0){
-            classImg[nSlide].classList.remove("active")
-            nSlide = images.length;
-        } else {
-            nSlide--;
-            classImg[(nSlide + 1)].classList.remove("active")
-        }
-
-        // Inserimento testo
-        title.innerHTML = images[nSlide].title;
-        text.innerHTML = images[nSlide].text;
-        classImg[nSlide].classList.add("active");
+        stopSlide();
+        switchReverse();
     }
 )
 
-// Selezioniamo tutti i container delle immagini e aggiungiamo la selezione sul primo
-const containerImg = document.getElementsByClassName("container-img");
-
-
-// Switch Automatico
-const time = setInterval(switchTime, 3000);
 // Ciclo for per cambiare immagine durante il click
 for (let i = 0; i < images.length; i++){
     containerImg[i].addEventListener("click", onClickImg);
     function onClickImg(){
 
-        // Stop switch automatico
-        clearInterval(time);
-        
-        // Rimozione tasti
-        buttonDown.style.display = "none";
-        buttonUp.style.display = "none";
-
-        const blockActive = document.querySelector(".block-active");
+        stopSlide();
 
         // Gestione focus su immagini
-        document.getElementsByClassName("active")[0].classList.remove("active");
+        classImg[nSlide].classList.remove("active");
+        containerImg[nSlide].classList.remove("block-active");
         classImg[i].classList.add("active");
-        blockActive === null ? "" : blockActive.classList.remove("block-active")
-        containerImg[i].classList.add("block-active")
+        containerImg[i].classList.add("block-active");
+        nSlide = i;
 
         // Testo slide
         title.innerHTML = images[i].title;
@@ -113,64 +103,125 @@ for (let i = 0; i < images.length; i++){
     
 };
 
-const active = document.querySelector(".active");
+    // Switch Automatico al caricamento della pagina
+let time = setInterval(switchAvanti, 3000);
 
+// Dichiarazione variabile per switch temporale inverso
+let timeReverse;
 
-function switchTime(){
-    if (nSlide === images.length){
-        classImg[(nSlide - 1)].classList.remove("active");
-        nSlide = 0;
-        classImg[nSlide].classList.add("active");
-        title.innerHTML = images[nSlide].title;
-        text.innerHTML = images[nSlide].text;
-
-    } else{
-        nSlide++;
-        active.classList.remove("active");
-        classImg[(nSlide - 1)].classList.add("active");
-        title.innerHTML = images[(nSlide - 1)].title;
-        text.innerHTML = images[(nSlide - 1)].text;
-    }
-}
-
+// Stato Slide
 let started = true;
+let reversed = false;
 
-document.getElementById("start").addEventListener("click",
-    function(){
-        if (started) return;
-        setInterval(switchTime, 3000);
-        started = true;
+// Pulsante per startare o stoppare lo switch automatico delle slide
+const startStop = document.getElementById("startStop");
+startStop.addEventListener("click", onClickStartStop);
+
+// Pulsante per far scorrere le slide al contrario
+document.getElementById("reverse").addEventListener("click", onClickReverse);
+
+// Funzione per switchare in avanti le slide
+function switchAvanti(){
+    classImg[nSlide].classList.remove("active")
+    containerImg[nSlide].classList.remove("block-active");
+
+    if (nSlide === 0){
+        nSlide++
+    } else if (nSlide >= images.length - 1){
+        containerImg[nSlide].classList.remove("block-active");
+        nSlide = 0;
+        containerImg[nSlide].classList.add("block-active");
+    } else{
+        nSlide++
     }
-);
 
-document.getElementById("stop").addEventListener("click",
-    function(){
-        clearTimeout(time)
-        clearInterval(timeReverse);
-        started = false
-    }
-)
-const timeReverse = setInterval(switchTimeReverse, 3000);
-clearInterval(timeReverse);
-
-document.getElementById("reverse").addEventListener("click",
-    function(){
-        clearTimeout(time)
-        nSlide = images.length - 1;
-        setInterval(switchTimeReverse, 3000);
-
-    }
-)
-
-function switchTimeReverse(){
-    active.classList.remove("active");
+    title.innerHTML = images[nSlide].title;
+    text.innerHTML = images[nSlide].text;
     classImg[nSlide].classList.add("active");
+    containerImg[nSlide].classList.add("block-active")
 
-    if (nSlide < images.length - 1 && nSlide != 0){
-        nSlide--
-    } else if (nSlide === images.length - 1){
+};
+
+// Funzione per switchare al contrario le slide
+function switchReverse(){
+
+    classImg[nSlide].classList.remove("active");
+    containerImg[nSlide].classList.remove("block-active");
+
+    if (nSlide >= images.length){
         nSlide--
     } else if (nSlide === 0){
+        containerImg[nSlide].classList.remove("block-active");
         nSlide = images.length - 1;
+        containerImg[nSlide].classList.add("block-active")
+    } else{
+        nSlide--
     }
-}
+
+    title.innerHTML = images[nSlide].title;
+    text.innerHTML = images[nSlide].text;
+    classImg[nSlide].classList.add("active");
+    containerImg[nSlide].classList.add("block-active")
+};
+
+// Funzione per startare o stoppare lo scorrimento automatico delle slide
+function onClickStartStop(){
+    if (started === true){
+        started = false;
+        startStop.innerHTML = `<i class="fa-solid fa-play"></i>`;
+        clearInterval(time);
+        clearInterval(timeReverse);
+        
+    } else if (started === false) {
+        started = true;
+        startStop.innerHTML = `<i class="fa-solid fa-stop"></i>`;
+
+        if (reversed === true){
+            timeReverse = setInterval(switchReverse, 3000);
+
+        } else {
+            time = setInterval(switchAvanti, 3000);
+        }
+    }
+
+};
+
+// Funzione per poter invertire lo scorrimento delle slide
+function onClickReverse(){
+    if (reversed === false){
+        reversed = true;
+        clearInterval(time);
+        timeReverse = setInterval(switchReverse, 3000);
+        this.innerHTML = `<i class="fa-solid fa-forward"></i>`;
+
+    } else{
+        reversed = false;
+        clearInterval(timeReverse);
+        time = setInterval(switchAvanti, 3000);
+        this.innerHTML = `<i class="fa-solid fa-backward"></i>`;
+    }
+};
+
+// Funzione per far partire le slide
+function startSlide(){
+    if (started === false) {
+        started = true;
+
+        if (reversed === true){
+            timeReverse = setInterval(switchReverse, 3000);
+
+        } else {
+            time = setInterval(switchAvanti, 3000);
+        }
+    }
+};
+
+// Funzione per stoppare le slide
+function stopSlide(){
+    if (started === true){
+            started = false;
+            startStop.innerHTML = `<i class="fa-solid fa-play"></i>`;
+            clearInterval(time);
+            clearInterval(timeReverse);
+        }
+};
