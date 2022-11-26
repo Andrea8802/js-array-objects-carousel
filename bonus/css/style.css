@@ -116,3 +116,19 @@ body{
 .block-active{
     border: 5px solid rgba(255, 255, 255, 0.5);
 }
+
+.button-card{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#start, #stop{
+    background-color: rgba(255, 255, 255, 0.5);
+    font-size: 50px;
+    border: none;
+    color: black;
+    padding: 0px 10px;
+    border-radius: 10px;
+}
