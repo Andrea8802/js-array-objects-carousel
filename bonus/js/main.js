@@ -38,6 +38,8 @@ buttonDown.addEventListener("click",
 
         // Stop switch automatico
         clearTimeout(time);
+        clearInterval(timeReverse);
+
         if (nSlide === images.length){
             classImg[nSlide].classList.remove("active")
             nSlide = 0;
@@ -61,6 +63,7 @@ buttonUp.addEventListener("click",
 
         // Stop switch automatico
         clearInterval(time);
+        clearInterval(timeReverse);
         
         if (nSlide === 0){
             classImg[nSlide].classList.remove("active")
@@ -83,8 +86,6 @@ const containerImg = document.getElementsByClassName("container-img");
 
 // Switch Automatico
 const time = setInterval(switchTime, 3000);
-
-
 // Ciclo for per cambiare immagine durante il click
 for (let i = 0; i < images.length; i++){
     containerImg[i].addEventListener("click", onClickImg);
@@ -112,6 +113,8 @@ for (let i = 0; i < images.length; i++){
     
 };
 
+const active = document.querySelector(".active");
+
 
 function switchTime(){
     if (nSlide === images.length){
@@ -123,48 +126,51 @@ function switchTime(){
 
     } else{
         nSlide++;
-        if (nSlide > 1){
-            classImg[(nSlide - 2)].classList.remove("active");
-           
-        } else{
-            classImg[(nSlide - 1)].classList.remove("active");
-        }
-
+        active.classList.remove("active");
         classImg[(nSlide - 1)].classList.add("active");
         title.innerHTML = images[(nSlide - 1)].title;
         text.innerHTML = images[(nSlide - 1)].text;
     }
 }
 
+let started = true;
 
-document.getElementById("start").addEventListener("click", () => setInterval(switchTime, 3000));
+document.getElementById("start").addEventListener("click",
+    function(){
+        if (started) return;
+        setInterval(switchTime, 3000);
+        started = true;
+    }
+);
 
-document.getElementById("stop").addEventListener("click", () => clearTimeout(time));
+document.getElementById("stop").addEventListener("click",
+    function(){
+        clearTimeout(time)
+        clearInterval(timeReverse);
+        started = false
+    }
+)
+const timeReverse = setInterval(switchTimeReverse, 3000);
+clearInterval(timeReverse);
+
 document.getElementById("reverse").addEventListener("click",
     function(){
         clearTimeout(time)
         nSlide = images.length - 1;
-        const timeReverse = setInterval(switchTimeReverse, 3000);
+        setInterval(switchTimeReverse, 3000);
 
     }
 )
 
 function switchTimeReverse(){
-    if (nSlide < images.length - 1){
-        document.querySelector(".active").classList.remove("active");
-        classImg[nSlide].classList.add("active");
+    active.classList.remove("active");
+    classImg[nSlide].classList.add("active");
+
+    if (nSlide < images.length - 1 && nSlide != 0){
         nSlide--
     } else if (nSlide === images.length - 1){
-        document.querySelector(".active").classList.remove("active");
-        classImg[nSlide].classList.add("active");
         nSlide--
-    } 
-    
-    if (nSlide === 0){
-        document.querySelector(".active").classList.remove("active");
-        classImg[nSlide].classList.add("active");
+    } else if (nSlide === 0){
         nSlide = images.length - 1;
     }
-    
-
 }

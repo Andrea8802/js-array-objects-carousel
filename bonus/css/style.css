@@ -129,11 +129,14 @@ body{
     display: none;
 }
 
-#start, #stop{
+#start, #stop, #reverse{
     background-color: rgba(255, 255, 255, 0.5);
     font-size: 50px;
     border: none;
     color: black;
     padding: 0px 10px;
     border-radius: 10px;
+}
+
+#start:active{
 }
